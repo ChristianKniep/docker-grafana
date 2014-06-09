@@ -1,5 +1,5 @@
 ###### grafana images
-FROM qnib-terminal
+FROM qnib/terminal
 MAINTAINER "Christian Kniep <christian@qnib.org>"
 
 ##### USER
