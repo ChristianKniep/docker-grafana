@@ -21,7 +21,7 @@ ADD grafana-1.5.4.tar.gz /opt/
 ADD etc/config.sample.js /opt/grafana-1.5.4/
 RUN mkdir -p /var/www
 RUN ln -s /opt/grafana-1.5.4 /var/www/grafana
-ADD opt/grafana-1.5.4/app/dashboards/default.json /opt/grafana-1.5.4/app/dashboards/default.json
+ADD dashboards.tar /opt/grafana-1.5.4/app/dashboards/
 
 
 CMD /bin/supervisord -c /etc/supervisord.conf
