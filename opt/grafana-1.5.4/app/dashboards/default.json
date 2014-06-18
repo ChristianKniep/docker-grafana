@@ -1,5 +1,5 @@
 {
-  "title": "Welcome to Grafana!",
+  "title": "Overview",
   "services": {
     "filter": {
       "list": [],
@@ -164,17 +164,19 @@
           },
           "targets": [
             {
-              "target": "movingAverage(carbon.agents.carbon-c0.metricsReceived,4)"
+              "target": "movingAverage(carbon.agents.carbon-c0.metricsReceived,10)"
             },
             {
-              "target": "movingAverage(carbon.agents.carbon-c0.cpuUsage,4)"
+              "target": "movingAverage(carbon.agents.carbon-c0.cpuUsage,10)"
             }
           ],
           "aliasColors": {},
           "aliasYAxis": {
             "carbon.agents.carbon-c0.cpuUsage": 2,
             "movingAverage(carbon.agents.carbon-c0.cpuUsage,5)": 2,
-            "movingAverage(carbon.agents.carbon-c0.cpuUsage,4)": 2
+            "movingAverage(carbon.agents.carbon-c0.cpuUsage,4)": 2,
+            "movingAverage(carbon.agents.carbon-c0.cpuUsage,7)": 2,
+            "movingAverage(carbon.agents.carbon-c0.cpuUsage,10)": 2
           },
           "title": "Carbon-Stats",
           "leftYAxisLabel": ""
