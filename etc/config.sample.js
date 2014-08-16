@@ -12,8 +12,8 @@ function (Settings) {
     /**
      * elasticsearch url:
      * For Basic authentication use: http://username:password@domain.com:9200
+     * elasticsearch: "http://"+window.location.hostname+":9200",
      */
-    elasticsearch: "http://"+window.location.hostname+":9200",
 
     /**
      * graphite-web url:
@@ -21,25 +21,22 @@ function (Settings) {
      * Basic authentication requires special HTTP headers to be configured
      * in nginx or apache for cross origin domain sharing to work (CORS).
      * Check install documentation on github
+     *
+     *graphiteUrl: "http://"+window.location.hostname+":80/graphite-api",
      */
-    graphiteUrl: "http://"+window.location.hostname+":80/graphite-api",
-    /**
-     * Multiple graphite servers? Comment out graphiteUrl and replace with something like this:
-
-      datasources: {
-        data_center_us: {
-          type: 'graphite',
-          url: 'http://<graphite_url>',
-          default: true
+    datasources: {
+        graphite: {
+            type: 'graphite',
+            url: "http://"+window.location.hostname+":80/graphite-api",
+            default: true
         },
-        data_center_eu: {
-          type: 'graphite',
-          url: 'http://<graphite_url>',
-          render_method: 'GET' // optional, use this to change render calls from POST to GET
-        }
-      },
-
-     */
+        elasticsearch: {
+            type: 'elasticsearch',
+            url: "http://"+window.location.hostname+":9200",
+            index: 'grafana-dash',
+            grafanaDB: true,
+       }
+    },
 
     default_route: '/dashboard/file/default.json',
 
