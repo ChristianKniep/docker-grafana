@@ -4,9 +4,8 @@ MAINTAINER "Christian Kniep <christian@qnib.org>"
 
 ### nginx
 RUN yum install -y nginx
-ADD etc/nginx/nginx.conf /etc/nginx/conf.d/nginx.conf
-WORKDIR /etc/nginx/
-RUN if ! grep "daemon off" nginx.conf ;then sed -i '/worker_processes.*/a daemon off;' nginx.conf;fi
+ADD etc/nginx/nginx.conf /etc/nginx/nginx.conf
+ADD etc/nginx/conf.d/grafana.conf /etc/nginx/conf.d/
 ADD etc/supervisord.d/nginx.ini /etc/supervisord.d/nginx.ini
 
 # Grafana
