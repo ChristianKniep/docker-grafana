@@ -18,8 +18,9 @@
           "editable": true,
           "type": "text",
           "mode": "markdown",
-          "content": "",
-          "style": {}
+          "content": "This dashboard should give a rough overview. More specific dashboards:\n\n- [Elasticsearch](/grafana/#/dashboard/file/default.json)",
+          "style": {},
+          "title": "Description"
         }
       ],
       "notice": false
