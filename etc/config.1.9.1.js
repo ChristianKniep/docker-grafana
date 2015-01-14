@@ -26,9 +26,17 @@ function (Settings) {
      */
     datasources: {
         graphite: {
-            type: 'graphite',
-            url: "http://"+window.location.hostname+":80/graphite-api",
-            default: true
+            type: 'influxdb',
+            url: "http://"+window.location.hostname+":8086/db/graphite",
+            username: 'graphite',
+            password: 'graphite',
+        },
+        default: {
+            type: 'influxdb',
+            url: "http://"+window.location.hostname+":8086/db/default",
+            username: 'default',
+            password: 'default',
+            grafanaDB: true
         },
         elasticsearch: {
             type: 'elasticsearch',
