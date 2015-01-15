@@ -1,9 +1,13 @@
 {
+  "id": null,
   "title": "ES Metrics",
+  "originalTitle": "ES Metrics",
   "tags": [],
   "style": "light",
   "timezone": "browser",
   "editable": true,
+  "hideControls": false,
+  "sharedCrosshair": false,
   "rows": [
     {
       "title": "Desc",
@@ -21,7 +25,8 @@
           "mode": "markdown",
           "content": "This dashboard shows the various elasticsearch metrics.",
           "style": {},
-          "title": "Elasticsearch Metrics"
+          "title": "Elasticsearch Metrics",
+          "id": 1
         }
       ],
       "notice": false
@@ -85,7 +90,8 @@
           "steppedLine": false,
           "tooltip": {
             "value_type": "cumulative",
-            "query_as_alias": true
+            "query_as_alias": true,
+            "shared": false
           },
           "targets": [
             {
@@ -93,7 +99,7 @@
               "function": "mean",
               "column": "value",
               "series": "servers.elk.elasticsearch.process.cpu.percent",
-              "query": "select  mean(value) from \"servers.elk.elasticsearch.process.cpu.percent\" where  time > now() - 15m     group by time(1s)  order asc",
+              "query": "select mean(value) from \"servers.elk.elasticsearch.process.cpu.percent\" where $timeFilter group by time($interval) order asc",
               "interval": "1s"
             },
             {
@@ -101,46 +107,22 @@
               "function": "mean",
               "column": "value",
               "series": "servers.elk.elasticsearch.process.mem.resident",
-              "query": "select  mean(value) from \"servers.elk.elasticsearch.process.mem.resident\" where  time > now() - 15m     group by time(1s)  order asc",
+              "query": "select mean(value) from \"servers.elk.elasticsearch.process.mem.resident\" where $timeFilter group by time($interval) order asc",
               "interval": "1s"
             }
           ],
           "aliasColors": {},
-          "aliasYAxis": {
-            "servers.elk.elasticsearch.process.mem.resident.mean": 1,
-            "servers.elk.elasticsearch.process.cpu.percent.mean": 2
-          },
-          "title": "Elasticsearch Metrics"
+          "title": "Elasticsearch Metrics",
+          "id": 2,
+          "seriesOverrides": [
+            {
+              "alias": "servers.elk.elasticsearch.process.cpu.percent.mean",
+              "yaxis": 2
+            }
+          ]
         }
       ],
       "notice": false
-    }
-  ],
-  "pulldowns": [
-    {
-      "type": "filtering",
-      "collapse": false,
-      "notice": false,
-      "enable": false
-    },
-    {
-      "type": "annotations",
-      "enable": true,
-      "annotations": [
-        {
-          "name": "syslog-ng",
-          "datasource": "elasticsearch",
-          "showLine": true,
-          "iconColor": "#C0C6BE",
-          "lineColor": "rgba(255, 96, 96, 0.592157)",
-          "iconSize": 13,
-          "enable": true,
-          "index": "logstash-*",
-          "query": "tags:syslog_out",
-          "timeField": "@timestamp",
-          "tagsField": "tags"
-        }
-      ]
     }
   ],
   "nav": [
@@ -177,12 +159,32 @@
     }
   ],
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "templating": {
-    "list": []
+    "list": [],
+    "enable": false
+  },
+  "annotations": {
+    "list": [
+      {
+        "name": "syslog-ng",
+        "datasource": "elasticsearch",
+        "showLine": true,
+        "iconColor": "#C0C6BE",
+        "lineColor": "rgba(255, 96, 96, 0.592157)",
+        "iconSize": 13,
+        "enable": true,
+        "index": "logstash-*",
+        "query": "tags:syslog_out",
+        "timeField": "@timestamp",
+        "tagsField": "tags"
+      }
+    ],
+    "enable": true
   },
   "refresh": false,
-  "version": 2
+  "version": 6,
+  "hideAllLegends": false
 }
