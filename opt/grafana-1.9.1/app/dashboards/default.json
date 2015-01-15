@@ -1,9 +1,13 @@
 {
+  "id": null,
   "title": "Dashboard",
+  "originalTitle": "Dashboard",
   "tags": [],
   "style": "light",
   "timezone": "browser",
   "editable": true,
+  "hideControls": false,
+  "sharedCrosshair": false,
   "rows": [
     {
       "title": "Desc",
@@ -18,9 +22,11 @@
           "editable": true,
           "type": "text",
           "mode": "markdown",
-          "content": "This dashboard should give a rough overview. More specific dashboards:\n\n- [Elasticsearch](/grafana/#/dashboard/file/default.json)",
+          "content": "This dashboard should give a rough overview. More specific dashboards:\n\n- [Elasticsearch](/grafana/#/dashboard/file/elasticsearch.json)",
           "style": {},
-          "title": "Description"
+          "title": "Description",
+          "id": 1,
+          "links": []
         }
       ],
       "notice": false
@@ -84,7 +90,8 @@
           "steppedLine": false,
           "tooltip": {
             "value_type": "cumulative",
-            "query_as_alias": true
+            "query_as_alias": true,
+            "shared": false
           },
           "targets": [
             {
@@ -92,7 +99,7 @@
               "function": "mean",
               "column": "value",
               "series": "servers.grafana.network.eth0.tx_byte",
-              "query": "select  mean(value) from \"servers.grafana.network.eth0.tx_byte\" where  time > now() - 1h     group by time(1s)  order asc",
+              "query": "select mean(value) from \"servers.grafana.network.eth0.tx_byte\" where $timeFilter group by time($interval) order asc",
               "interval": "",
               "alias": "grafana.tx"
             },
@@ -111,7 +118,7 @@
               "function": "mean",
               "column": "value",
               "series": "servers.elk.network.eth0.tx_byte",
-              "query": "select  mean(value) from \"servers.elk.network.eth0.tx_byte\" where  time > now() - 1h     group by time(1s)  order asc",
+              "query": "select mean(value) from \"servers.elk.network.eth0.tx_byte\" where $timeFilter group by time($interval) order asc",
               "interval": "",
               "alias": "elk.tx"
             },
@@ -134,24 +141,12 @@
             "elk.tx": "#EAB839",
             "elk.rx": "#EAB839"
           },
-          "aliasYAxis": {},
-          "title": "Network Traffic"
+          "title": "Network Traffic",
+          "id": 2,
+          "seriesOverrides": []
         }
       ],
       "notice": false
-    }
-  ],
-  "pulldowns": [
-    {
-      "type": "filtering",
-      "collapse": false,
-      "notice": false,
-      "enable": false
-    },
-    {
-      "type": "annotations",
-      "enable": true,
-      "annotations": []
     }
   ],
   "nav": [
@@ -192,8 +187,29 @@
     "to": "now"
   },
   "templating": {
-    "list": []
+    "list": [],
+    "enable": false
+  },
+  "annotations": {
+    "list": [
+      {
+        "name": "syslog",
+        "datasource": "elasticsearch",
+        "showLine": true,
+        "iconColor": "#C0C6BE",
+        "lineColor": "rgba(255, 96, 96, 0.592157)",
+        "iconSize": 13,
+        "enable": true,
+        "index": "logstash-*",
+        "query": "type:syslog",
+        "timeField": "@timestamp",
+        "titleField": "message",
+        "tagsField": "tags"
+      }
+    ],
+    "enable": true
   },
   "refresh": false,
-  "version": 2
+  "version": 6,
+  "hideAllLegends": false
 }
