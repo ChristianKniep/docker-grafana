@@ -16,6 +16,4 @@ RUN mkdir -p /var/www
 RUN ln -s /opt/grafana-1.9.1 /var/www/grafana
 ADD opt/grafana-1.9.1/app/dashboards/ /opt/grafana-1.9.1/app/dashboards/
 
-ADD etc/syslog-ng/conf.d/logstash.conf /etc/syslog-ng/conf.d/logstash.conf
-ADD etc/supervisord.d/syslog-ng.ini /etc/supervisord.d/syslog-ng.ini
 ADD etc/consul.d/ /etc/consul.d/
