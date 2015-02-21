@@ -11,7 +11,7 @@
   "rows": [
     {
       "title": "Desc",
-      "height": "25px",
+      "height": "75px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
@@ -22,7 +22,7 @@
           "editable": true,
           "type": "text",
           "mode": "markdown",
-          "content": "This dashboard should give a rough overview. More specific dashboards: [Elasticsearch](/grafana/#/dashboard/file/elasticsearch.json)",
+          "content": "This dashboard should give a rough overview. More specific dashboards:\n\n- [Elasticsearch](/grafana/#/dashboard/file/elasticsearch.json)",
           "style": {},
           "title": "Description",
           "id": 1,
@@ -39,7 +39,7 @@
       "collapsable": true,
       "panels": [
         {
-          "span": 12,
+          "span": 8,
           "editable": true,
           "type": "graph",
           "loadingEditor": false,
@@ -119,7 +119,7 @@
           "links": []
         },
         {
-          "span": 12,
+          "span": 4,
           "editable": true,
           "type": "graph",
           "loadingEditor": false,
@@ -179,9 +179,9 @@
               "target": "",
               "function": "mean",
               "column": "value",
-              "series": "/^servers..*.network.eth0.tx_byte/",
-              "query": "select mean(value) from /^servers..*.network.eth0.tx_byte/ where $timeFilter group by time($interval) order asc",
-              "alias": "$1",
+              "series": "/^servers..*.redis.6379.memory.internal_view/",
+              "query": "select mean(value) from /^servers..*.redis.6379.memory.internal_view/ where $timeFilter group by time($interval) order asc",
+              "alias": "$1.$3.$5",
               "hide": false
             }
           ],
@@ -193,13 +193,101 @@
             "elk.tx": "#EAB839",
             "elk.rx": "#EAB839"
           },
-          "title": "Network Traffic Outgoing",
+          "title": "Redis Cache Stats",
           "id": 3,
           "seriesOverrides": [],
           "links": []
         }
       ],
       "notice": false
+    },
+    {
+      "title": "New row",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "panels": [
+        {
+          "span": 8,
+          "editable": true,
+          "type": "graph",
+          "loadingEditor": false,
+          "datasource": null,
+          "renderer": "flot",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_formats": [
+            "bytes",
+            "short"
+          ],
+          "grid": {
+            "max": null,
+            "min": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)",
+            "leftMax": 0,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "thresholdLine": false
+          },
+          "annotate": {
+            "enable": false
+          },
+          "resolution": 100,
+          "lines": true,
+          "fill": 0,
+          "linewidth": 1,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "legend": {
+            "show": true,
+            "values": true,
+            "min": false,
+            "max": false,
+            "current": true,
+            "total": false,
+            "avg": false
+          },
+          "percentage": false,
+          "zerofill": true,
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true,
+            "shared": false
+          },
+          "targets": [
+            {
+              "target": "",
+              "function": "mean",
+              "column": "value*-1",
+              "series": "/^servers..*.network.eth0.tx_byte/",
+              "query": "select mean(value*-1) from /^servers..*.network.eth0.tx_byte/ where $timeFilter group by time($interval) order asc",
+              "alias": "$1",
+              "fill": ""
+            }
+          ],
+          "aliasColors": {
+            "servers.grafana.network.eth0.tx_byte.mean": "#7EB26D",
+            "servers.grafana.network.eth0.rx_byte.mean": "#EAB839",
+            "servers.elk.network.eth0.tx_byte.mean": "#EAB839",
+            "grafana.rx": "#7EB26D",
+            "elk.tx": "#EAB839",
+            "elk.rx": "#EAB839"
+          },
+          "title": "Network Traffic Outgoing",
+          "id": 4,
+          "seriesOverrides": [],
+          "links": []
+        }
+      ]
     }
   ],
   "nav": [
