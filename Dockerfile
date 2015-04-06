@@ -14,6 +14,6 @@ ADD grafana-1.9.1.tar.gz /opt/
 ADD etc/config.1.9.1.js /opt/grafana-1.9.1/config.js
 RUN mkdir -p /var/www
 RUN ln -s /opt/grafana-1.9.1 /var/www/grafana
-ADD opt/grafana-1.9.1/app/dashboards/ /opt/grafana-1.9.1/app/dashboards/
+ADD var/www/grafana/app/dashboards/ /var/www/grafana/app/dashboards/
 
 ADD etc/consul.d/ /etc/consul.d/
