@@ -1,7 +1,7 @@
 {
   "id": null,
   "title": "Slurm Dashboard",
-  "originalTitle": "Dashboard",
+  "originalTitle": "Slurm Dashboard",
   "tags": [],
   "style": "light",
   "timezone": "browser",
@@ -9,28 +9,6 @@
   "hideControls": false,
   "sharedCrosshair": false,
   "rows": [
-    {
-      "title": "Desc",
-      "height": "75px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "type": "text",
-          "mode": "markdown",
-          "content": "This dashboard should give a rough overview. More specific dashboards:\n\n- [Elasticsearch](/grafana/#/dashboard/file/elasticsearch.json)",
-          "style": {},
-          "title": "Description",
-          "id": 1,
-          "links": []
-        }
-      ],
-      "notice": false
-    },
     {
       "title": "Network",
       "height": "250px",
