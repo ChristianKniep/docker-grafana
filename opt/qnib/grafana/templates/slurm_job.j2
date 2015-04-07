@@ -1,0 +1,157 @@
+{
+  "id": null,
+  "title": "Slurm JOBID {{ jobid }}",
+  "originalTitle": "New Dashboard",
+  "tags": [],
+  "style": "light",
+  "timezone": "browser",
+  "editable": true,
+  "hideControls": false,
+  "sharedCrosshair": false,
+  "rows": [
+    {
+      "title": "Row1",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "panels": [
+        {
+          "title": "Network",
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "type": "graph",
+          "id": 1,
+          "datasource": null,
+          "renderer": "flot",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "grid": {
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "lines": true,
+          "fill": 0,
+          "linewidth": 1,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "percentage": false,
+          "legend": {
+            "show": true,
+            "values": false,
+            "min": false,
+            "max": false,
+            "current": false,
+            "total": false,
+            "avg": false
+          },
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "shared": false
+          },
+          "targets": [
+            {% for node in nodelist %}
+            {
+              "target": "",
+              "function": "mean",
+              "column": "value",
+              "series": "servers.{{ node }}.network.eth0.rx_byte",
+              "query": "select mean(value) from \"servers.{{ node }}.network.eth0.rx_byte\" where $timeFilter group by time($interval) order asc",
+              "alias": "$1",
+              "fill": ""
+            },
+            {
+              "target": "",
+              "function": "mean",
+              "column": "value*-1",
+              "series": "servers.{{ node }}.network.eth0.tx_byte",
+              "query": "select mean(value*-1) from \"servers.{{ node }}.network.eth0.tx_byte\" where $timeFilter group by time($interval) order asc",
+              "alias": "$1",
+              "fill": ""
+            {% if not loop.last %}
+            },
+            {% else %}
+            }
+            {% endif %}
+            {% endfor %}
+          ],
+          "aliasColors": {},
+          "seriesOverrides": []
+        }
+      ]
+    }
+  ],
+  "nav": [
+    {
+      "type": "timepicker",
+      "enable": true,
+      "status": "Stable",
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d"
+      ],
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m"
+      ],
+      "now": true,
+      "collapse": false,
+      "notice": false
+    }
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": [
+    {
+        "name": "slurm_out",
+        "datasource": "elasticsearch",
+        "showLine": true,
+        "iconColor": "rgb(39, 85, 250)",
+        "lineColor": "rgba(96, 204, 255, 0.59)",
+        "iconSize": 10,
+        "enable": true,
+        "index": "logstash-*",
+        "query": "program:slurm_out AND slurm_jobid:{{ jobid }}",
+        "titleField": "message",
+        "tagsField": "tags",
+        "timeField": "@timestamp",
+        "textField": "message"
+      }
+     ],
+    "enable": true
+  },
+  "refresh": false,
+  "version": 6,
+  "hideAllLegends": false
+}
