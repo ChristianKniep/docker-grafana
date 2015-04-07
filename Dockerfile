@@ -18,10 +18,6 @@ ADD var/www/grafana/app/dashboards/ /var/www/grafana/app/dashboards/
 
 ADD etc/consul.d/ /etc/consul.d/
 
-# docopt
-RUN yum install -y python-pip libyaml-devel python-devel
-RUN pip install neo4jrestclient pyyaml docopt python-consul jinja2
-
 ADD etc/supervisord.d/slurmdash.ini /etc/supervisord.d/slurmdash.ini
 ADD opt/qnib/grafana/bin/slurm_dashboard.py /opt/qnib/grafana/bin/
 ADD opt/qnib/grafana/templates/ /opt/qnib/grafana/templates/
