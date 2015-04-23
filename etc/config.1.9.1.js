@@ -25,18 +25,15 @@ function (Settings) {
      *graphiteUrl: "http://"+window.location.hostname+":80/graphite-api",
      */
     datasources: {
-        carbon: {
+        influxdb: {
             type: 'influxdb',
             url: "http://"+window.location.hostname+":8086/db/carbon",
             username: 'carbon',
             password: 'carbon',
         },
-        default: {
-           type: 'influxdb',
-            url: "http://"+window.location.hostname+":8086/db/default",
-            username: 'default',
-            password: 'default',
-            grafanaDB: true
+        graphite: {
+            type: 'graphite',
+            url: "http://"+window.location.hostname+":8888",
         },
         elasticsearch: {
             type: 'elasticsearch',
