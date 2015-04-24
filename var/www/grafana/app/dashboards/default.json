@@ -43,13 +43,13 @@
           "editable": true,
           "type": "graph",
           "loadingEditor": false,
-          "datasource": null,
+          "datasource": "graphite",
           "renderer": "flot",
           "x-axis": true,
           "y-axis": true,
           "scale": 1,
           "y_formats": [
-            "bytes",
+            "short",
             "short"
           ],
           "grid": {
@@ -96,7 +96,7 @@
           },
           "targets": [
             {
-              "target": "",
+              "target": "aliasByNode(servers.*.network.eth0.rx_byte, 1)",
               "function": "mean",
               "column": "value",
               "series": "/^servers..*.network.eth0.rx_byte/",
@@ -123,7 +123,7 @@
           "editable": true,
           "type": "graph",
           "loadingEditor": false,
-          "datasource": null,
+          "datasource": "graphite",
           "renderer": "flot",
           "x-axis": true,
           "y-axis": true,
@@ -176,13 +176,7 @@
           },
           "targets": [
             {
-              "target": "",
-              "function": "mean",
-              "column": "value",
-              "series": "/^servers..*.network.eth0.tx_byte/",
-              "query": "select mean(value) from /^servers..*.network.eth0.tx_byte/ where $timeFilter group by time($interval) order asc",
-              "alias": "$1",
-              "hide": false
+              "target": "aliasByNode(servers.*.network.eth0.tx_byte, 1)"
             }
           ],
           "aliasColors": {
