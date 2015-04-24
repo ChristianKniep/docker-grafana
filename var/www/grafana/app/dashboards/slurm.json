@@ -299,15 +299,15 @@
   "annotations": {
     "list": [
       {
-        "name": "slurm_out",
+        "name": "slurmd",
         "datasource": "elasticsearch",
         "showLine": true,
-        "iconColor": "rgb(81, 152, 231)",
-        "lineColor": "rgba(96, 131, 255, 0.67)",
-        "iconSize": 10,
+        "iconColor": "#C0C6BE",
+        "lineColor": "rgba(255, 96, 96, 0.592157)",
+        "iconSize": 13,
         "enable": true,
         "index": "logstash-*",
-        "query": "program:slurm_out",
+        "query": "program:slurmd AND message:\"Launching batch*\"",
         "timeField": "@timestamp",
         "titleField": "message",
         "tagsField": "tags",
