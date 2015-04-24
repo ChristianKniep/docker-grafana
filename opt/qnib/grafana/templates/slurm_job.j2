@@ -1,7 +1,7 @@
 {
   "id": null,
   "title": "Slurm JOBID {{ jobid }}",
-  "originalTitle": "New Dashboard",
+  "originalTitle": "Slurm JOBID 10",
   "tags": [],
   "style": "light",
   "timezone": "browser",
@@ -22,7 +22,7 @@
           "editable": true,
           "type": "graph",
           "id": 1,
-          "datasource": null,
+          "datasource": "graphite",
           "renderer": "flot",
           "x-axis": true,
           "y-axis": true,
@@ -64,30 +64,12 @@
             "shared": false
           },
           "targets": [
-            {% for node in nodelist %}
             {
-              "target": "",
-              "function": "mean",
-              "column": "value",
-              "series": "servers.{{ node }}.network.eth0.rx_byte",
-              "query": "select mean(value) from \"servers.{{ node }}.network.eth0.rx_byte\" where $timeFilter group by time($interval) order asc",
-              "alias": "$1",
-              "fill": ""
+              "target": "aliasByNode(scale(servers.{{"{"}}{% for node in nodelist %}{% if not loop.first %},{% endif %}{{ node }}{% endfor %}{{"}"}}.network.eth0.rx_byte, -1), 1)"
             },
             {
-              "target": "",
-              "function": "mean",
-              "column": "value*-1",
-              "series": "servers.{{ node }}.network.eth0.tx_byte",
-              "query": "select mean(value*-1) from \"servers.{{ node }}.network.eth0.tx_byte\" where $timeFilter group by time($interval) order asc",
-              "alias": "$1",
-              "fill": ""
-            {% if not loop.last %}
-            },
-            {% else %}
+              "target": "aliasByNode(servers.{{"{"}}{% for node in nodelist %}{% if not loop.first %},{% endif %}{{ node }}{% endfor %}{{"}"}}.network.eth0.tx_byte, 1)"
             }
-            {% endif %}
-            {% endfor %}
           ],
           "aliasColors": {},
           "seriesOverrides": []
@@ -133,7 +115,7 @@
   },
   "annotations": {
     "list": [
-    {
+      {
         "name": "slurm_out",
         "datasource": "elasticsearch",
         "showLine": true,
@@ -148,7 +130,7 @@
         "timeField": "@timestamp",
         "textField": "message"
       }
-     ],
+    ],
     "enable": true
   },
   "refresh": "5s",
