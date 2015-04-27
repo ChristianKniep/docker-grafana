@@ -11,19 +11,31 @@
   "rows": [
     {
       "title": "Job Boards",
-      "height": "200px",
+      "height": "175px",
       "editable": true,
       "collapse": false,
       "panels": [
         {
-          "title": "Job Boards",
+          "title": "running jobs",
           "error": false,
-          "span": 12,
+          "span": 6,
           "editable": true,
           "type": "text",
           "id": 6,
           "mode": "markdown",
-          "content": "{% for jobid, jobname, user in jobs %}- [{{ jobname }} ({{user}})](/grafana/#/dashboard/file/slurm_{{jobid}}.json)\n{% endfor %}",
+          "content": "{% for jobid, jobname, user, start in running %}- JobID {{ jobid }}: {{ start }} [{{ jobname }} ({{user}})](/grafana/#/dashboard/file/slurm_{{jobid}}.json)\n{% endfor %}",
+          "style": {},
+          "links": []
+        },
+        {
+          "title": "5 most recent finished jobs",
+          "error": false,
+          "span": 6,
+          "editable": true,
+          "type": "text",
+          "id": 6,
+          "mode": "markdown",
+          "content": "{% for jobid, jobname, user, start, duration, ec in finished %}- JobID {{ jobid }}: {{ start }} ({{ duration }}min) [{{ jobname }} ({{user}})](/grafana/#/dashboard/file/slurm_{{jobid}}.json)\n{% endfor %}",
           "style": {},
           "links": []
         }

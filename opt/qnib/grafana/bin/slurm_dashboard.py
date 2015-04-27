@@ -29,6 +29,7 @@ import logging
 import os
 import re
 import codecs
+import math
 import ast
 import sys
 from datetime import datetime
@@ -260,6 +261,18 @@ class SlurmDash(object):
         jobs = {}
         if values is None:
             return
+        dt_end = None
+        dt_start = None
+        dt_diff = {}
+        def diff_time(start, end):
+            dt_diff = {}
+            return math.floor(((end-start).seconds) / 60)
+            #dt_diff['day'] = divmod(dt_end-dt_start,86400)  # days
+            #dt_diff['hour'] = divmod(dt_diff['day'][1],3600)  # hours
+            #dt_diff['min'] = divmod(dt_diff['hour'][1],60)  # minutes
+            #dt_diff['sec'] = divmod(dt_diff['min'][1],60)  # minutes
+            #return dt_diff
+
         for value in values:
             jobid, key = value['Key'].split("/")[2:]
             val = value['Value']
@@ -269,17 +282,32 @@ class SlurmDash(object):
             if key == 'nodelist':
                 jobs[jobid][key] = val.split(",")
             elif key == "start":
-                dt = datetime.fromtimestamp(int(val))
-                jobs[jobid][key] = dt.strftime("%FT%H:%m:%S.%fZ")
+                dt_start = datetime.fromtimestamp(int(val))
+                jobs[jobid]['start_grafana'] = dt_start.strftime("%FT%H:%m:%S.%fZ")
+                jobs[jobid]['start_human'] = dt_start.strftime("%F %H:%m:%S")
+                if dt_end:
+                    jobs[jobid]['duration'] = diff_time(dt_start, dt_end)
+            elif key == 'end':
+                dt_end = datetime.fromtimestamp(int(val))
+                if dt_start:
+                    jobs[jobid]['duration'] = diff_time(dt_start, dt_end)
+                jobs[jobid]['end_human'] = dt_end.strftime("%H:%m:%S")
             else:
                 jobs[jobid][key] = val
 
         # Overview board
 
-        slurmPayload = []
+        running_jobs = []
+        finished_jobs = []
         for jobid, job in jobs.items():
             job['jobid'] = jobid
-            slurmPayload.append((jobid, job['jobname'], job['user']))
+            payload = (jobid, job['jobname'], job['user'], job['start_human'])
+            if 'end_human' in job.keys():
+                payload = (jobid, job['jobname'], job['user'], job['start_human'], job['duration'], job['derived_ec'])
+                finished_jobs.append(payload)
+            else:
+                payload = (jobid, job['jobname'], job['user'], job['start_human'])
+                running_jobs.append(payload)
             if os.path.exists('/var/www/grafana/app/dashboards/slurm_%s.json' % jobid):
                 logging.debug("Dashboard for jobid '%(jobid)s' / '%(jobname)s' already existing" % job)
                 continue
@@ -288,7 +316,8 @@ class SlurmDash(object):
             with open(self._target['slurmjob'] % job, "w") as fd:
                 fd.write(out)
 
-        out = self._template['slurm'].render({'jobs': sorted(slurmPayload)})
+        out = self._template['slurm'].render({'running': sorted(running_jobs),
+                                              'finished': reversed(sorted(finished_jobs)[-5:])})
         with open(self._target['slurm'], "w") as fd:
             fd.write(out)
 
