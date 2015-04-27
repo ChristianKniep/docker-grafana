@@ -9,8 +9,10 @@ Usage:
     slurm_dashboard.py --version
 
 Options:
-    --slurm-template <path>     Slurm job dashboard template.
+    --slurmjob-template <path>  Slurm job dashboard template.
                                 [default: /opt/qnib/grafana/templates/slurm_job.j2]
+    --slurm-template <path>     Slurm Dashbard.
+                                [default: /opt/qnib/grafana/templates/slurm.j2]
     --server                    If set loops over fetching information.
     -h --help                   Show this screen.
     --version                   Show version.
@@ -214,8 +216,11 @@ class SlurmDash(object):
         self._template = {}
         self._last_idx = None
         self._target = {
-            'slurm': '/var/www/grafana/app/dashboards/slurm_%(jobid)s.json',
+            'slurmjob': '/var/www/grafana/app/dashboards/slurm_%(jobid)s.json',
+            'slurm': '/var/www/grafana/app/dashboards/slurm.json',
         }
+        with open(cfg['--slurmjob-template'], "r") as fd:
+            self._template['slurmjob'] = Template(fd.read())
         with open(cfg['--slurm-template'], "r") as fd:
             self._template['slurm'] = Template(fd.read())
 
@@ -269,19 +274,23 @@ class SlurmDash(object):
             else:
                 jobs[jobid][key] = val
 
+        # Overview board
 
+        slurmPayload = []
         for jobid, job in jobs.items():
             job['jobid'] = jobid
+            slurmPayload.append((jobid, job['jobname'], job['user']))
             if os.path.exists('/var/www/grafana/app/dashboards/slurm_%s.json' % jobid):
                 logging.debug("Dashboard for jobid '%(jobid)s' / '%(jobname)s' already existing" % job)
                 continue
             logging.info("Create Dashboard for job %(jobid)s '%(jobname)s'" % job)
-            out = self._template['slurm'].render(**job)
-            with open(self._target['slurm'] % job, "w") as fd:
+            out = self._template['slurmjob'].render(**job)
+            with open(self._target['slurmjob'] % job, "w") as fd:
                 fd.write(out)
 
-
-
+        out = self._template['slurm'].render({'jobs': sorted(slurmPayload)})
+        with open(self._target['slurm'], "w") as fd:
+            fd.write(out)
 
 
 def main():
