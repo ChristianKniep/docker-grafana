@@ -10,7 +10,8 @@ ADD etc/supervisord.d/nginx.ini /etc/supervisord.d/nginx.ini
 
 # Grafana
 WORKDIR /opt
-ADD grafana-1.9.1.tar.gz /opt/
+RUN wget -q -O /tmp/grafana-1.9.1.tar.gz  http://grafanarel.s3.amazonaws.com/grafana-1.9.1.tar.gz && \
+    cd /opt/ && tar xf /tmp/grafana-1.9.1.tar.gz && rm -f /tmp/grafana-1.9.1.tar.gz
 ADD etc/config.1.9.1.js /opt/grafana-1.9.1/config.js
 RUN mkdir -p /var/www
 RUN ln -s /opt/grafana-1.9.1 /var/www/grafana
