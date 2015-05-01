@@ -16,7 +16,7 @@
       "collapse": false,
       "panels": [
         {
-          "title": "Running Processes on Service nodes",
+          "title": "Processes on Service nodes",
           "error": false,
           "span": 12,
           "editable": true,
@@ -46,7 +46,7 @@
           "points": false,
           "pointradius": 5,
           "bars": false,
-          "stack": false,
+          "stack": true,
           "percentage": false,
           "legend": {
             "show": true,
@@ -60,12 +60,12 @@
           "nullPointMode": "null as zero",
           "steppedLine": true,
           "tooltip": {
-            "value_type": "cumulative",
+            "value_type": "individual",
             "shared": true
           },
           "targets": [
             {
-              "target": "aliasByNode(psutil.service.*.state.running, 2)"
+              "target": "aliasByNode(psutil.service.*.state.*, 2)"
             }
           ],
           "aliasColors": {},
