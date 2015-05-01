@@ -275,6 +275,7 @@ class SlurmDash(object):
 
         for value in values:
             jobid, key = value['Key'].split("/")[2:]
+            jobid = int(jobid)
             val = value['Value']
             key = key.lower()
             if jobid not in jobs.keys():
@@ -283,15 +284,15 @@ class SlurmDash(object):
                 jobs[jobid][key] = val.split(",")
             elif key == "start":
                 dt_start = datetime.fromtimestamp(int(val))
-                jobs[jobid]['start_grafana'] = dt_start.strftime("%FT%H:%m:%S.%fZ")
-                jobs[jobid]['start_human'] = dt_start.strftime("%F %H:%m:%S")
+                jobs[jobid]['start_grafana'] = dt_start.strftime("%FT%H:%M:%S.%fZ")
+                jobs[jobid]['start_human'] = dt_start.strftime("%F %H:%M:%S")
                 if dt_end:
                     jobs[jobid]['duration'] = diff_time(dt_start, dt_end)
             elif key == 'end':
                 dt_end = datetime.fromtimestamp(int(val))
                 if dt_start:
                     jobs[jobid]['duration'] = diff_time(dt_start, dt_end)
-                jobs[jobid]['end_human'] = dt_end.strftime("%H:%m:%S")
+                jobs[jobid]['end_human'] = dt_end.strftime("%H:%M:%S")
             else:
                 jobs[jobid][key] = val
 
