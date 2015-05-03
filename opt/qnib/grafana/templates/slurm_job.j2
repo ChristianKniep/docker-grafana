@@ -18,7 +18,7 @@
         {
           "title": "Network",
           "error": false,
-          "span": 12,
+          "span": 9,
           "editable": true,
           "type": "graph",
           "id": 1,
@@ -75,9 +75,29 @@
           "seriesOverrides": []
         },
         {
+          "title": "Job Map",
+          "error": false,
+          "span": 3,
+          "editable": true,
+          "type": "text",
+          "id": 6,
+          "mode": "html",
+          "content": "<a href='/slurm/job_{{jobid}}.png' target='blank'><img src='/slurm/job_{{jobid}}.png' height='240' width='240'></img></a><br>Click picture for a bigger version.",
+          "style": {},
+          "links": []
+        }
+      ]
+    },
+    {
+      "title": "Row2",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "panels": [
+        {
           "title": "Context Switches",
           "error": false,
-          "span": 12,
+          "span": 9,
           "editable": true,
           "type": "graph",
           "id": 1,
