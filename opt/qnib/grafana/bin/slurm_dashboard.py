@@ -302,7 +302,6 @@ class SlurmDash(object):
         finished_jobs = []
         for jobid, job in jobs.items():
             job['jobid'] = jobid
-            payload = (jobid, job['jobname'], job['user'], job['start_human'])
             if 'end_human' in job.keys():
                 payload = (jobid, job['jobname'], job['user'], job['start_human'], job['duration'], job['derived_ec'])
                 finished_jobs.append(payload)

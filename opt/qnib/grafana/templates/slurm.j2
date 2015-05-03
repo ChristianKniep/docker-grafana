@@ -11,31 +11,43 @@
   "rows": [
     {
       "title": "Job Boards",
-      "height": "175px",
+      "height": "265px",
       "editable": true,
       "collapse": false,
       "panels": [
         {
-          "title": "running jobs",
+          "title": "Job Map",
           "error": false,
-          "span": 6,
+          "span": 4,
           "editable": true,
           "type": "text",
           "id": 6,
-          "mode": "markdown",
-          "content": "{% for jobid, jobname, user, start in running %}- JobID {{ jobid }}: {{ start }} [{{ jobname }} ({{user}})](/grafana/#/dashboard/file/slurm_{{jobid}}.json)\n{% endfor %}",
+          "mode": "html",
+          "content": "<a href='/slurm/jobs.png' target='blank'><img src='/slurm/jobs.png' height='260' width='260'></img></a><br>Click picture for a bigger version.",
+          "style": {},
+          "links": []
+        },
+        {
+          "title": "running jobs",
+          "error": false,
+          "span": 4,
+          "editable": true,
+          "type": "text",
+          "id": 6,
+          "mode": "html",
+          "content": "<dl>{% for jobid, jobname, user, start in running %}<dt><a href='/grafana/#/dashboard/file/slurm_{{jobid}}.json'>JobID {{jobid}}</a></dt><dd>{{start}} {{jobname}} ({{user}})</dd>{% endfor %}</dl>",
           "style": {},
           "links": []
         },
         {
           "title": "5 most recent finished jobs",
           "error": false,
-          "span": 6,
+          "span": 4,
           "editable": true,
           "type": "text",
           "id": 6,
-          "mode": "markdown",
-          "content": "{% for jobid, jobname, user, start, duration, ec in finished %}- JobID {{ jobid }}: {{ start }} ({{ duration }}min) [{{ jobname }} ({{user}})](/grafana/#/dashboard/file/slurm_{{jobid}}.json)\n{% endfor %}",
+          "mode": "html",
+          "content": "<dl>{% for jobid, jobname, user, start, duration, ec in finished %}<dt><a href='/grafana/#/dashboard/file/slurm_{{jobid}}.json'>JobID {{jobid}} ({{duration}}) EC:{{ec}}</a></dt><dd>{{start}} {{jobname}} ({{user}})</dd>{% endfor %}</dl>",
           "style": {},
           "links": []
         }
