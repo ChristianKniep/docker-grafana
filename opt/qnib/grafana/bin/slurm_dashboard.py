@@ -13,6 +13,7 @@ Options:
                                 [default: /opt/qnib/grafana/templates/slurm_job.j2]
     --slurm-template <path>     Slurm Dashbard.
                                 [default: /opt/qnib/grafana/templates/slurm.j2]
+    --delay <int>           Seconds delay inbetween loop runs [default: 10]
     --server                    If set loops over fetching information.
     -h --help                   Show this screen.
     --version                   Show version.
@@ -216,6 +217,7 @@ class SlurmDash(object):
         self._consul = consul.Consul(host='consul.service.consul')
         self._template = {}
         self._last_idx = None
+        self._last_run = time.time()
         self._target = {
             'slurmjob': '/var/www/grafana/app/dashboards/slurm_%(jobid)s.json',
             'slurm': '/var/www/grafana/app/dashboards/slurm.json',
@@ -244,10 +246,14 @@ class SlurmDash(object):
                 logging.info("Gracefully exit after CTRL-C")
                 self.close()
                 break
-            time.sleep(5)
-            logging.debug("Got index '%s'" % self._last_idx)
             self.fetch_info()
-            time.sleep(5)
+            now = time.time()
+            since = now - self._last_run
+            delay = max(0, int(self._cfg['--delay']) - since)
+            self._cfg._logger.info("Took: %ssec, sleep for %ssec" % (since, delay))
+            self._last_run = now
+            time.sleep(delay)
+            logging.debug("Got index '%s'" % self._last_idx)
 
     def close(self):
         """  exists
@@ -303,10 +309,26 @@ class SlurmDash(object):
         for jobid, job in jobs.items():
             job['jobid'] = jobid
             if 'end_human' in job.keys():
-                payload = (jobid, job['jobname'], job['user'], job['start_human'], job['duration'], job['derived_ec'])
+                try:
+                    payload = (jobid, job['jobname'], job['user'], job['start_human'], job['duration'], job['derived_ec'])
+                except KeyError:
+                    if 'derived_ec' not in job.keys():
+                        self._cfg._logger.warn("Jobid '%(jobid)s' has no 'derived_ec'!?" % job)
+                        payload = (jobid, job['jobname'], job['user'], job['start_human'], job['duration'], "?")
+                    else:
+                        self._cfg._logger.error("Jobid '%s' has something missing... %s!?" % (job['jobid'], ",".join(job.keys())))
+                        payload = (jobid, "?", "?", "?", "?", "?")
                 finished_jobs.append(payload)
             else:
-                payload = (jobid, job['jobname'], job['user'], job['start_human'])
+                try:
+                    payload = (jobid, job['jobname'], job['user'], job['start_human'])
+                except KeyError:
+                    if 'jobname' not in job.keys():
+                        self._cfg._logger.warn("Jobid '%(jobid)s' has no 'jobname" % job)
+                        payload = (jobid, "?", job['user'], job['start_human'])
+                    else:
+                        self._cfg._logger.error("Jobid '%s' has something missing... %s!?" % (job['jobid'], ",".join(job.keys())))
+                        payload = (jobid, "?", "?", "?")
                 running_jobs.append(payload)
             if os.path.exists('/var/www/grafana/app/dashboards/slurm_%s.json' % jobid):
                 logging.debug("Dashboard for jobid '%(jobid)s' / '%(jobname)s' already existing" % job)
