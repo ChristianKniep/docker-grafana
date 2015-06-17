@@ -19,6 +19,6 @@ ADD var/www/grafana/app/dashboards/ /var/www/grafana/app/dashboards/
 
 ADD etc/consul.d/ /etc/consul.d/
 
-ADD etc/supervisord.d/slurmdash.ini /etc/supervisord.d/slurmdash.ini
-ADD opt/qnib/grafana/bin/slurm_dashboard.py /opt/qnib/grafana/bin/
+ADD etc/supervisord.d/dash.ini /etc/supervisord.d/
+ADD opt/qnib/grafana/bin/dashboard.py /opt/qnib/grafana/bin/
 ADD opt/qnib/grafana/templates/ /opt/qnib/grafana/templates/

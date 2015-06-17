@@ -4,9 +4,9 @@
 """
 
 Usage:
-    slurm_dashboard.py [options]
-    slurm_dashboard.py (-h | --help)
-    slurm_dashboard.py --version
+    dashboard.py [options]
+    dashboard.py (-h | --help)
+    dashboard.py --version
 
 Options:
     --slurmjob-template <path>  Slurm job dashboard template.
