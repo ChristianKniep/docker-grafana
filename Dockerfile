@@ -1,9 +1,8 @@
 ###### grafana images
-FROM qnib/terminal
-MAINTAINER "Christian Kniep <christian@qnib.org>"
+FROM qnib/terminal:fd22
 
 ### nginx
-RUN yum install -y nginx
+RUN dnf install -y nginx
 ADD etc/nginx/nginx.conf /etc/nginx/nginx.conf
 ADD etc/nginx/conf.d/grafana.conf /etc/nginx/conf.d/
 ADD etc/supervisord.d/nginx.ini /etc/supervisord.d/nginx.ini
