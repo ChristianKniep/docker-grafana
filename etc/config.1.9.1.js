@@ -34,6 +34,12 @@ function (Settings) {
             type: 'opentsdb',
             url: "http://localhost:4243"
         },
+        influxdb: {
+            type: 'influxdb',
+            url: "http://"+window.location.hostname+":8086/db/carbon",
+            username: 'root',
+            password: 'root',
+        },
         elasticsearch: {
             type: 'elasticsearch',
             url: "http://"+window.location.hostname+":9200",
