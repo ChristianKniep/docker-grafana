@@ -1,6 +1,5 @@
 ###### grafana images
-FROM qnib/terminal:light
-MAINTAINER "Christian Kniep <christian@qnib.org>"
+FROM qnib/terminal
 
 ### nginx
 RUN yum install -y nginx
@@ -9,12 +8,10 @@ ADD etc/nginx/conf.d/grafana.conf /etc/nginx/conf.d/
 ADD etc/supervisord.d/nginx.ini /etc/supervisord.d/nginx.ini
 
 # Grafana
-WORKDIR /opt
-RUN wget -q -O /tmp/grafana-1.9.1.tar.gz  http://grafanarel.s3.amazonaws.com/grafana-1.9.1.tar.gz && \
-    cd /opt/ && tar xf /tmp/grafana-1.9.1.tar.gz && rm -f /tmp/grafana-1.9.1.tar.gz
-ADD etc/config.1.9.1.js /opt/grafana-1.9.1/config.js
-RUN mkdir -p /var/www
-RUN ln -s /opt/grafana-1.9.1 /var/www/grafana
+RUN mkdir -p /var/www/ && \
+    curl -fsL http://grafanarel.s3.amazonaws.com/grafana-1.9.1.tar.gz | tar xfz - -C /var/www/ && \
+    mv /var/www/grafana-1.9.1 /var/www/grafana
+ADD etc/config.1.9.1.js /var/www/grafana/config.js
 ADD var/www/grafana/app/dashboards/ /var/www/grafana/app/dashboards/
 
 ADD etc/consul.d/ /etc/consul.d/

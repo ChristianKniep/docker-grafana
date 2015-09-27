@@ -87,12 +87,12 @@
           },
           "percentage": false,
           "zerofill": true,
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "steppedLine": false,
           "tooltip": {
             "value_type": "cumulative",
             "query_as_alias": true,
-            "shared": false
+            "shared": true
           },
           "targets": [
             {
@@ -167,12 +167,12 @@
           },
           "percentage": false,
           "zerofill": true,
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "steppedLine": false,
           "tooltip": {
             "value_type": "cumulative",
             "query_as_alias": true,
-            "shared": false
+            "shared": true
           },
           "targets": [
             {
