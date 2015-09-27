@@ -29,11 +29,10 @@ function (Settings) {
             type: 'graphite',
             url: "http://"+window.location.hostname+":8888",
         },
-        influxdb: {
-            type: 'influxdb',
-            url: "http://"+window.location.hostname+":8086/db/carbon",
-            username: 'carbon',
-            password: 'carbon',
+        opentsdb: {
+            default: true,
+            type: 'opentsdb',
+            url: "http://localhost:4243"
         },
         elasticsearch: {
             type: 'elasticsearch',
