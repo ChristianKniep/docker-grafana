@@ -117,7 +117,16 @@
           "id": 2,
           "seriesOverrides": [],
           "links": []
-        },
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "New row",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "panels": [
         {
           "span": 12,
           "editable": true,
@@ -192,8 +201,7 @@
           "seriesOverrides": [],
           "links": []
         }
-      ],
-      "notice": false
+      ]
     }
   ],
   "nav": [
