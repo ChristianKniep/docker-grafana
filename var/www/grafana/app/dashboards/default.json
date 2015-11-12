@@ -10,6 +10,26 @@
   "sharedCrosshair": false,
   "rows": [
     {
+      "title": "Links",
+      "height": "50px",
+      "editable": false,
+      "collapse": false,
+      "panels": [
+        {
+          "title": "More Dashboards",
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "type": "text",
+          "id": 4,
+          "mode": "markdown",
+          "content": "[DockerStats](/grafana/#/dashboard/file/dockerstats.json)",
+          "style": {},
+          "links": []
+        }
+      ]
+    },
+    {
       "title": "Network",
       "height": "250px",
       "editable": true,
@@ -48,7 +68,7 @@
           },
           "resolution": 100,
           "lines": true,
-          "fill": 0,
+          "fill": 1,
           "linewidth": 1,
           "points": false,
           "pointradius": 5,
@@ -65,7 +85,7 @@
           },
           "percentage": false,
           "zerofill": true,
-          "nullPointMode": "null",
+          "nullPointMode": "connected",
           "steppedLine": false,
           "tooltip": {
             "value_type": "cumulative",
@@ -74,7 +94,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(servers.*.network.eth0.rx_byte, 1)",
+              "target": "aliasByNode(carbon.relays.*.metricsReceived, 2)",
               "function": "mean",
               "column": "value",
               "series": "/^servers..*.network.eth0.rx_byte/",
@@ -91,20 +111,24 @@
             "elk.tx": "#EAB839",
             "elk.rx": "#EAB839"
           },
-          "title": "Network Traffic Incoming",
+          "title": "Carbon Relay Stats",
           "id": 2,
-          "seriesOverrides": [],
+          "seriesOverrides": [
+            {
+              "alias": "docker1-carbon-r0",
+              "yaxis": 1
+            },
+            {
+              "alias": "carbon.relays.docker1-carbon-r0.cpuUsage",
+              "yaxis": 2
+            },
+            {
+              "alias": "docker1-carbon-r0.cpuUsage",
+              "yaxis": 2
+            }
+          ],
           "links": []
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "New row",
-      "height": "250px",
-      "editable": true,
-      "collapse": false,
-      "panels": [
+        },
         {
           "span": 12,
           "editable": true,
@@ -116,7 +140,7 @@
           "y-axis": true,
           "scale": 1,
           "y_formats": [
-            "bytes",
+            "short",
             "short"
           ],
           "grid": {
@@ -137,12 +161,12 @@
           },
           "resolution": 100,
           "lines": true,
-          "fill": 0,
+          "fill": 1,
           "linewidth": 1,
           "points": false,
           "pointradius": 5,
           "bars": false,
-          "stack": false,
+          "stack": true,
           "legend": {
             "show": true,
             "values": true,
@@ -154,7 +178,7 @@
           },
           "percentage": false,
           "zerofill": true,
-          "nullPointMode": "null",
+          "nullPointMode": "connected",
           "steppedLine": false,
           "tooltip": {
             "value_type": "cumulative",
@@ -163,7 +187,13 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(servers.*.network.eth0.tx_byte, 1)"
+              "target": "aliasByNode(carbon.agents.*.metricsReceived, 2)",
+              "function": "mean",
+              "column": "value",
+              "series": "/^servers..*.network.eth0.rx_byte/",
+              "query": "select mean(value) from /^servers..*.network.eth0.rx_byte/ where $timeFilter group by time($interval) order asc",
+              "alias": "$1",
+              "fill": ""
             }
           ],
           "aliasColors": {
@@ -174,12 +204,41 @@
             "elk.tx": "#EAB839",
             "elk.rx": "#EAB839"
           },
-          "title": "Network Traffic Outgoing",
-          "id": 3,
-          "seriesOverrides": [],
+          "title": "Carbon Agent Stats",
+          "id": 5,
+          "seriesOverrides": [
+            {
+              "alias": "docker1-carbon-r0",
+              "yaxis": 1
+            },
+            {
+              "alias": "carbon.relays.docker1-carbon-r0.cpuUsage",
+              "yaxis": 2
+            },
+            {
+              "alias": "docker1-carbon-r0.cpuUsage",
+              "yaxis": 2
+            },
+            {
+              "alias": "docker1-carbon-c0.cpuUsage",
+              "yaxis": 2
+            },
+            {
+              "alias": "docker1-carbon-c1.cpuUsage",
+              "yaxis": 2
+            }
+          ],
           "links": []
         }
-      ]
+      ],
+      "notice": false
+    },
+    {
+      "title": "New row",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "panels": []
     }
   ],
   "nav": [
@@ -216,7 +275,7 @@
     }
   ],
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "templating": {
