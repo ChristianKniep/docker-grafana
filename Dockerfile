@@ -1,5 +1,5 @@
 ###### grafana images
-FROM qnib/terminal:fd22
+FROM qnib/terminal
 
 ### nginx
 RUN dnf install -y nginx
