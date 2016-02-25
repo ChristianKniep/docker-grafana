@@ -1,7 +1,7 @@
 {
   "id": null,
   "title": "Docker Dashboard",
-  "originalTitle": "Dashboard",
+  "originalTitle": "Docker Dashboard",
   "tags": [],
   "style": "light",
   "timezone": "browser",
@@ -27,7 +27,7 @@
           "y-axis": true,
           "scale": 1,
           "y_formats": [
-            "short",
+            "percent",
             "short"
           ],
           "grid": {
@@ -65,7 +65,7 @@
           },
           "percentage": false,
           "zerofill": true,
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "steppedLine": false,
           "tooltip": {
             "value_type": "individual",
@@ -74,13 +74,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(metrics.DockerCpuPercentage.application.fullerite.collector.DockerStats.container_id.*.container_name.*.host.*, 9)",
-              "function": "mean",
-              "column": "value",
-              "series": "/^servers..*.network.eth0.rx_byte/",
-              "query": "select mean(value) from /^servers..*.network.eth0.rx_byte/ where $timeFilter group by time($interval) order asc",
-              "alias": "$1",
-              "fill": ""
+              "target": "aliasByNode(fullerite.DockerCpuPercentage.collector.DockerStats.container_id.*.container_name.*, 7)"
             }
           ],
           "aliasColors": {
@@ -107,7 +101,7 @@
           "y-axis": true,
           "scale": 1,
           "y_formats": [
-            "short",
+            "bytes",
             "short"
           ],
           "grid": {
@@ -145,7 +139,7 @@
           },
           "percentage": false,
           "zerofill": true,
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "steppedLine": false,
           "tooltip": {
             "value_type": "individual",
@@ -154,13 +148,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(metrics.DockerMemoryUsed.application.fullerite.collector.DockerStats.container_id.*.container_name.*.host.*, 9)",
-              "function": "mean",
-              "column": "value",
-              "series": "/^servers..*.network.eth0.rx_byte/",
-              "query": "select mean(value) from /^servers..*.network.eth0.rx_byte/ where $timeFilter group by time($interval) order asc",
-              "alias": "$1",
-              "fill": ""
+              "target": "aliasByNode(fullerite.DockerMemoryUsed.collector.DockerStats.container_id.*.container_name.*, 7)"
             }
           ],
           "aliasColors": {
@@ -172,7 +160,7 @@
             "elk.rx": "#EAB839"
           },
           "title": "Container Memory Usage",
-          "id": 3,
+          "id": 4,
           "seriesOverrides": [],
           "links": []
         }
@@ -221,7 +209,7 @@
     }
   ],
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "templating": {
