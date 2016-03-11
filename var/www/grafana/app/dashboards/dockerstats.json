@@ -74,7 +74,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(fullerite.*.DockerCpuPercentage.collector.DockerStats.container_id.*.container_name.*, 1, 8)"
+              "target": "aliasByNode(fullerite.$host.DockerCpuPercentage.collector.DockerStats.container_id.*.container_name.*, 1, 8)"
             }
           ],
           "aliasColors": {
@@ -157,7 +157,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(fullerite.*.DockerMemoryUsed.collector.DockerStats.container_id.*.container_name.*, 1, 8)"
+              "target": "aliasByNode(fullerite.$host.DockerMemoryUsed.collector.DockerStats.container_id.*.container_name.*, 1, 8)"
             }
           ],
           "aliasColors": {
@@ -210,12 +210,52 @@
     }
   ],
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "templating": {
-    "list": [],
-    "enable": false
+    "list": [
+      {
+        "type": "query",
+        "datasource": "graphite",
+        "refresh_on_load": false,
+        "name": "host",
+        "options": [
+          {
+            "text": "All",
+            "value": "{docker1,docker2,docker3,docker4,docker6}"
+          },
+          {
+            "text": "docker1",
+            "value": "docker1"
+          },
+          {
+            "text": "docker2",
+            "value": "docker2"
+          },
+          {
+            "text": "docker3",
+            "value": "docker3"
+          },
+          {
+            "text": "docker4",
+            "value": "docker4"
+          },
+          {
+            "text": "docker6",
+            "value": "docker6"
+          }
+        ],
+        "includeAll": true,
+        "allFormat": "glob",
+        "query": "fullerite.*",
+        "current": {
+          "text": "docker6",
+          "value": "docker6"
+        }
+      }
+    ],
+    "enable": true
   },
   "annotations": {
     "list": [
@@ -236,7 +276,7 @@
     ],
     "enable": true
   },
-  "refresh": false,
+  "refresh": "10s",
   "version": 6,
   "hideAllLegends": false
 }
