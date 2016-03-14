@@ -81,7 +81,7 @@
       "collapse": false,
       "panels": [
         {
-          "title": "Docker Memory RSS",
+          "title": "Docker Memory RSS (>75MB)",
           "error": false,
           "span": 12,
           "editable": true,
@@ -131,7 +131,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(diamond.*.*.docker.*.*.mem.rss, 1, 4)"
+              "target": "aliasByNode(currentAbove(diamond.*.*.docker.*.*.mem.rss, 78643200), 1, 4)"
             }
           ],
           "aliasColors": {},
